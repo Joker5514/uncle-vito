@@ -20,4 +20,5 @@ const Header: React.FC<{ affiliateLink: string }> = ({ affiliateLink }) => {
   );
 };
 
-export default Header;
+// ⚡ Bolt: Wrapped with React.memo() to prevent unnecessary re-renders when parent App state changes
+export default React.memo(Header);

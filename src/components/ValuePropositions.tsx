@@ -28,4 +28,5 @@ const ValuePropositions: React.FC = () => {
   );
 };
 
-export default ValuePropositions;
+// ⚡ Bolt: Wrapped with React.memo() to prevent unnecessary re-renders when parent App state changes
+export default React.memo(ValuePropositions);
