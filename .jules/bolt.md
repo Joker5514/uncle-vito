@@ -1,0 +1,3 @@
+## 2024-03-04 - Static Memoization of Game Objects
+**Learning:** In BlackjackGame, a full 52-card deck (objects with properties inside an array) was being re-created dynamically from scratch on every deal using `flatMap` and `map`. This caused unnecessary repetitive array allocations in a hot path, as the base deck is a static, deterministic collection.
+**Action:** Pre-compute static collections (like card decks) once outside of functions and return shallow copies (e.g., `[...BASE_DECK]`) to optimize generation time without sacrificing immutability.
