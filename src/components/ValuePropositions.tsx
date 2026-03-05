@@ -1,8 +1,8 @@
-import React from 'react';
+import { memo } from 'react';
 import { VALUE_PROPS } from '../constants';
 
 // Value Propositions Component
-const ValuePropositions: React.FC = () => {
+const ValuePropositions = memo(() => {
   return (
     <section className="py-20">
       <h2 className="text-3xl md:text-4xl font-bold mb-12 tracking-wider text-center" style={{ color: '#d4af37' }}>
@@ -26,6 +26,6 @@ const ValuePropositions: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 export default ValuePropositions;
