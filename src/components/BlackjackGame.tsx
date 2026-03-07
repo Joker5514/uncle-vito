@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card as CardType, VitoMessage } from '../types';
 import { createDeck, shuffleDeck, calculateScore } from '../utils/gameLogic';
 import Card from './Card';
@@ -9,8 +9,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -37,10 +35,12 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
     deal();
   }, [deal]);
 
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
+  // ⚡ Bolt: Removed redundant `useState` and `useEffect` for scores.
+  // Calculating scores directly from state using `useMemo` avoids
+  // unnecessary re-renders when hands are updated and ensures
+  // the UI is always perfectly in sync.
+  const playerScore = useMemo(() => calculateScore(playerHand), [playerHand]);
+  const dealerScore = useMemo(() => calculateScore(dealerHand), [dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
