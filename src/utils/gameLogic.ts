@@ -3,21 +3,36 @@ import { Card } from '../types';
 export const SUITS: Card['suit'][] = ['♠', '♥', '♦', '♣'];
 export const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
+const INITIAL_DECK: Card[] = SUITS.flatMap(suit =>
+  RANKS.map(rank => {
+    let value = parseInt(rank);
+    if (rank === 'J' || rank === 'Q' || rank === 'K') value = 10;
+    if (rank === 'A') value = 11;
+    return { suit, rank, value };
+  })
+);
+
 export const createDeck = (): Card[] => {
-  return SUITS.flatMap(suit =>
-    RANKS.map(rank => {
-      let value = parseInt(rank);
-      if (rank === 'J' || rank === 'Q' || rank === 'K') value = 10;
-      if (rank === 'A') value = 11;
-      return { suit, rank, value };
-    })
-  );
+  return [...INITIAL_DECK];
+};
+
+export const getRandomInt = (min: number, max: number): number => {
+  const range = max - min;
+  const maxValidValue = Math.floor(4294967296 / range) * range;
+  const array = new Uint32Array(1);
+  let randomValue: number;
+  do {
+    window.crypto.getRandomValues(array);
+    randomValue = array[0];
+  } while (randomValue >= maxValidValue);
+
+  return min + (randomValue % range);
 };
 
 export const shuffleDeck = (deck: Card[]): Card[] => {
   const newDeck = [...deck];
   for (let i = newDeck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = getRandomInt(0, i + 1);
     [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
   }
   return newDeck;
