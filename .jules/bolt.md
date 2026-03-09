@@ -1,0 +1,3 @@
+## 2024-05-24 - Avoid Derived State with useEffect
+**Learning:** Using `useEffect` to sync derived state (like `playerScore` from `playerHand`) triggers a double render cycle. This is a common performance anti-pattern in React that wastes render cycles for simple deterministic calculations.
+**Action:** Always derive values directly from state during the render cycle. Only use `useState` and `useEffect` when state changes need to trigger an asynchronous action or side effect, not for purely synchronous data transformations.
