@@ -1,0 +1,3 @@
+## 2024-05-24 - Syncing Derived State via useEffect in React
+**Learning:** In the Blackjack component, the scores were stored in state and synchronized using a `useEffect` watching the card hands. This is an anti-pattern that triggers an unnecessary double-render cycle for every update to the hands. Calculating derived state (like score from a hand of cards) directly during the render cycle is significantly faster and cleaner.
+**Action:** When working with React state, avoid using `useEffect` to synchronize derived values. Always calculate derived values directly during render.
