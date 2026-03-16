@@ -3,6 +3,13 @@ import { Card } from '../types';
 export const SUITS: Card['suit'][] = ['♠', '♥', '♦', '♣'];
 export const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
+export const getRandomInt = (min: number, max: number): number => {
+  const range = max - min + 1;
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  return min + (array[0] % range);
+};
+
 export const createDeck = (): Card[] => {
   return SUITS.flatMap(suit =>
     RANKS.map(rank => {
@@ -17,7 +24,7 @@ export const createDeck = (): Card[] => {
 export const shuffleDeck = (deck: Card[]): Card[] => {
   const newDeck = [...deck];
   for (let i = newDeck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = getRandomInt(0, i);
     [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
   }
   return newDeck;

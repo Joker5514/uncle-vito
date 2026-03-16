@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getRandomInt } from '../utils/gameLogic';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -49,5 +50,5 @@ const getFallbackMessage = (outcome: 'win' | 'loss' | 'neutral'): string => {
   };
 
   const options = messages[outcome];
-  return options[Math.floor(Math.random() * options.length)];
+  return options[getRandomInt(0, options.length - 1)];
 };
