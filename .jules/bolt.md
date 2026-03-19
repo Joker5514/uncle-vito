@@ -1,0 +1,3 @@
+## 2024-05-24 - Double-renders from derived state in React components
+**Learning:** Game components like `BlackjackGame.tsx` were using `useEffect` to synchronize `playerScore` and `dealerScore` with `playerHand` and `dealerHand` via `useState`. This triggered an unnecessary double-render cycle for every card dealt or hit, which is a performance bottleneck. Calculating derived state during the initial render loop eliminates this inefficiency.
+**Action:** Always compute lightweight derived values (like hand scores) directly during the render cycle rather than syncing them to `useState` via `useEffect`, especially in high-frequency interactive components.
