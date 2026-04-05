@@ -1,0 +1,3 @@
+## 2025-05-15 - [Avoid Derived State Synchronization in useEffect]
+**Learning:** [Synchronizing derived state (like `playerScore` calculated from `playerHand`) using `useState` and `useEffect` is an anti-pattern that triggers an unnecessary double render cycle (first for the hand update, then for the score update).]
+**Action:** [Calculate derived values directly during the render cycle. Only use `useEffect` for side effects (like external API calls or subscriptions), not to derive state from existing state.]
