@@ -37,6 +37,12 @@ describe('BlackjackGame', () => {
     // Wait for initial deal
     await waitFor(() => screen.getAllByText(/[♠♥♦♣]/));
 
+    const hitButton = screen.getByText('Hit') as HTMLButtonElement;
+    if (hitButton.disabled) {
+      fireEvent.click(screen.getByText('New Hand'));
+      await waitFor(() => expect(screen.getByText('Hit')).not.toBeDisabled());
+    }
+
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
     fireEvent.click(screen.getByText('Hit'));
