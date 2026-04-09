@@ -9,8 +9,10 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
+  // Calculate derived state directly during render instead of using useEffect
+  // This prevents an unnecessary double render cycle when playerHand or dealerHand changes.
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -37,10 +39,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
     deal();
   }, [deal]);
 
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
