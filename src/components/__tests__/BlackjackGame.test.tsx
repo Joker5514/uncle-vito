@@ -39,6 +39,16 @@ describe('BlackjackGame', () => {
 
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
+    // Deal until hit button is enabled
+    const hitButton = screen.getByText('Hit');
+    while (hitButton.disabled) {
+      fireEvent.click(screen.getByText('New Hand'));
+      // Wait for new cards to be dealt
+      await waitFor(() => {
+        expect(screen.getAllByText(/[♠♥♦♣]/).length).toBeGreaterThan(0);
+      });
+    }
+
     fireEvent.click(screen.getByText('Hit'));
 
     await waitFor(() => {
