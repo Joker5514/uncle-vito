@@ -41,3 +41,15 @@ export const ROULETTE_NUMBER_COLORS: { [key: number]: 'red' | 'black' | 'green' 
   28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red',
   35: 'black', 36: 'red'
 };
+
+export const checkOutsideBetWin = (betType: string, finalNumber: number): boolean => {
+  const numColor = ROULETTE_NUMBER_COLORS[finalNumber];
+  return (
+    (betType === 'red' && numColor === 'red') ||
+    (betType === 'black' && numColor === 'black') ||
+    (betType === 'even' && finalNumber % 2 === 0) ||
+    (betType === 'odd' && finalNumber % 2 !== 0) ||
+    (betType === '1-18' && finalNumber >= 1 && finalNumber <= 18) ||
+    (betType === '19-36' && finalNumber >= 19 && finalNumber <= 36)
+  );
+};
