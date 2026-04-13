@@ -11,6 +11,9 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
   const [gameOver, setGameOver] = useState(false);
 
+  // ⚡ Bolt Optimization: Calculated derived state directly during render
+  // Avoids double-render cycles that occur when using useEffect for synchronization
+  // Impact: Reduces component re-renders during gameplay actions
   const playerScore = calculateScore(playerHand);
   const dealerScore = calculateScore(dealerHand);
   const [message, setMessage] = useState('');
