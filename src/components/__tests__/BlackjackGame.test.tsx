@@ -39,6 +39,12 @@ describe('BlackjackGame', () => {
 
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
+    const hitButton = screen.getByText('Hit') as HTMLButtonElement;
+    if (hitButton.disabled) {
+        // If initially dealt 21, hit is disabled, click New Hand first
+        fireEvent.click(screen.getByText('New Hand'));
+        await waitFor(() => expect(screen.getByText('Hit')).not.toBeDisabled());
+    }
     fireEvent.click(screen.getByText('Hit'));
 
     await waitFor(() => {
