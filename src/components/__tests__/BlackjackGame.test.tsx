@@ -37,6 +37,13 @@ describe('BlackjackGame', () => {
     // Wait for initial deal
     await waitFor(() => screen.getAllByText(/[♠♥♦♣]/));
 
+    // Force a new hand to ensure hit isn't disabled due to a 21
+    fireEvent.click(screen.getByText('New Hand'));
+    await waitFor(() => {
+      // Small wait to allow re-deal to finish and hit button to be ready
+      expect(screen.getByRole('button', { name: 'Hit' })).not.toBeDisabled();
+    });
+
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
     fireEvent.click(screen.getByText('Hit'));
