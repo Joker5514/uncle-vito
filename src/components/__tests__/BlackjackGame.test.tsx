@@ -37,9 +37,22 @@ describe('BlackjackGame', () => {
     // Wait for initial deal
     await waitFor(() => screen.getAllByText(/[♠♥♦♣]/));
 
+    let hitButton = screen.getByText('Hit') as HTMLButtonElement;
+
+    // If initial hand is 21, the button is disabled. Deal a new hand until we can hit.
+    while (hitButton.disabled) {
+      fireEvent.click(screen.getByText('New Hand'));
+      // Wait for a new deal to populate cards
+      await waitFor(() => {
+          const cards = screen.getAllByText(/[♠♥♦♣]/);
+          expect(cards.length).toBeGreaterThan(0);
+      });
+      hitButton = screen.getByText('Hit') as HTMLButtonElement;
+    }
+
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
-    fireEvent.click(screen.getByText('Hit'));
+    fireEvent.click(hitButton);
 
     await waitFor(() => {
         const newCards = screen.getAllByText(/[♠♥♦♣]/).length;
