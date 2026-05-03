@@ -1,0 +1,3 @@
+## 2024-03-24 - [Avoid Pointless Micro-Optimizations]
+**Learning:** Replacing a clean `Object.values().reduce()` call with a `for...of` loop on a tiny object (like roulette bets) is a micro-optimization with zero measurable impact and violates the constraint against optimizations that don't measurably improve performance. It also doesn't reduce allocations if `Object.values()` is still called.
+**Action:** Focus on significant architectural performance gains like React.memo to prevent component re-renders or hoisting static arrays to avoid allocations on every render cycle, rather than pointless loop replacements.
