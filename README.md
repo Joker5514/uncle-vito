@@ -1,5 +1,8 @@
 # AI Bridge - Uncle Vito's Casino Guide
 
+[![CI](https://github.com/Joker5514/Ai-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/Joker5514/Ai-bridge/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Joker5514/Ai-bridge/branch/main/graph/badge.svg)](https://codecov.io/gh/Joker5514/Ai-bridge)
+
 Uncle Vito's Casino Guide is an AI-powered gambling coach application that helps users learn Blackjack and Roulette strategies in a risk-free environment.
 
 Built with **Vite**, **React**, **TypeScript**, and **Google Gemini AI**.

@@ -27,5 +27,22 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/main.tsx',
+        'src/vite-env.d.ts',
+        'src/test/**',
+        'src/services/ai.ts',
+      ],
+      thresholds: {
+        statements: 65,
+        lines: 65,
+        functions: 70,
+        branches: 60,
+      },
+    },
   }
 })
