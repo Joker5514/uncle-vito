@@ -5,7 +5,11 @@ import Card from './Card';
 import { getVitoMessage } from '../services/ai';
 
 // Blackjack Game Component
-const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = ({ setVitoMessage }) => {
+// ⚡ Bolt Optimization:
+// What: Wrapping top-level BlackjackGame in React.memo.
+// Why: Prevents unnecessary re-renders when the parent App/TutorMode component re-renders.
+// Impact: Reduces React reconciliation overhead for heavy game views.
+const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = React.memo(({ setVitoMessage }) => {
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
@@ -140,6 +144,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
       </button>
     </div>
   );
-};
+});
 
 export default BlackjackGame;
