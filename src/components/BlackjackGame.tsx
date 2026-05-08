@@ -142,4 +142,5 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+// ⚡ Bolt Optimization: Wrapped BlackjackGame in React.memo to prevent unnecessary re-renders when parent state changes but props do not.
+export default React.memo(BlackjackGame);
