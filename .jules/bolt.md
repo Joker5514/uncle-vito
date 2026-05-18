@@ -1,0 +1,3 @@
+## 2024-05-18 - Hoisting static arrays in RouletteGame
+**Learning:** Static arrays like betting types, roulette numbers, and chip values were defined inline within the render loop of `RouletteGame.tsx` (`['red', 'black', 'even', 'odd', '1-18', '19-36']`, `Array.from({ length: 37 })`, `[5, 10, 25, 50, 100]`). This forces React to allocate new memory for these arrays on every render (which happens frequently as the timer/wheel spins or bets are updated), leading to unnecessary garbage collection overhead and potential micro-stutters.
+**Action:** Always hoist constants and static arrays outside the component scope if they don't depend on component state or props.
