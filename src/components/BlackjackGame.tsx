@@ -142,4 +142,10 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+/*
+⚡ Bolt Optimization:
+What: Wrapped BlackjackGame export with React.memo.
+Why: Prevents unnecessary re-renders when parent states (like TutorMode or App) change.
+Impact: Improves performance by avoiding redundant render cycles for this heavy component.
+*/
+export default React.memo(BlackjackGame);
