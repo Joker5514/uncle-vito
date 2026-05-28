@@ -9,8 +9,14 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
+
+  // ⚡ Bolt Optimization:
+  // What: Replace useState/useEffect with direct render calculation
+  // Why: Avoids unnecessary component re-renders from state updates and avoids syncing issues
+  // Impact: Reduces React render cycles when cards are dealt
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
+
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -36,11 +42,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
@@ -142,4 +143,8 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+// ⚡ Bolt Optimization:
+// What: Wrap the entire game component in React.memo
+// Why: Prevents the heavy game component from re-rendering unless its props actually change
+// Impact: Significantly reduces wasted render cycles when unrelated state in the parent updates
+export default React.memo(BlackjackGame);
