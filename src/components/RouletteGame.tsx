@@ -175,4 +175,5 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
   );
 };
 
-export default RouletteGame;
+// React.memo prevents redundant memory allocations and unnecessary re-renders when parent state changes but props do not
+export default React.memo(RouletteGame);
