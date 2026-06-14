@@ -9,9 +9,11 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+
+  // ⚡ Bolt Performance Optimization: Compute scores directly during render instead of using useState and useEffect. This avoids redundant re-renders and potential state sync issues.
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
   const [message, setMessage] = useState('');
 
   const updateVitoMessage = useCallback(async (context: string, outcome: 'win' | 'loss' | 'neutral') => {
@@ -36,11 +38,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
@@ -142,4 +139,5 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+// ⚡ Bolt Performance Optimization: Export heavy component with React.memo to prevent unnecessary re-renders
+export default React.memo(BlackjackGame);
