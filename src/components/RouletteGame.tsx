@@ -175,4 +175,5 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
   );
 };
 
-export default RouletteGame;
+// Wrapped with React.memo to prevent unnecessary re-renders
+export default React.memo(RouletteGame);
