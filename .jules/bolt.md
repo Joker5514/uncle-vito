@@ -1,0 +1,3 @@
+## 2024-06-25 - React Derived State Performance Anti-Pattern
+**Learning:** Found a classic React anti-pattern in `BlackjackGame.tsx` where derived data (`playerScore` and `dealerScore`) were being managed via `useState` and updated in a `useEffect` dependency on the hands. This forces a completely redundant render cycle every time a card is dealt or drawn.
+**Action:** Always refactor derived state into direct calculations during the render phase. If the calculation is extremely complex, wrap it in `useMemo`, but for simple array aggregations (like summing blackjack hands), calculating directly is faster than the hook overhead. Additionally, for heavy game components, wrap the export in `React.memo` to prevent unnecessary re-renders from parent state changes.
