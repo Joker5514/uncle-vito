@@ -38,3 +38,6 @@ __pycache__/
 .coverage
 coverage.xml
 htmlcov/
+
+# Coverage (JavaScript/TypeScript)
+coverage/
