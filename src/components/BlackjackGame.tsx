@@ -9,10 +9,15 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
+
+  // ⚡ Bolt Optimization:
+  // What: Derive player and dealer scores directly from hand arrays during render.
+  // Why: Avoids using useState and useEffect for derived data (React anti-pattern).
+  // Impact: Prevents state synchronization issues and eliminates unnecessary extra re-renders.
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
 
   const updateVitoMessage = useCallback(async (context: string, outcome: 'win' | 'loss' | 'neutral') => {
     const text = await getVitoMessage(context, outcome);
@@ -36,11 +41,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
@@ -142,4 +142,8 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+// ⚡ Bolt Optimization:
+// What: Wrap component export in React.memo()
+// Why: BlackjackGame receives a stable prop (`setVitoMessage`) and doesn't need to re-render when the parent TutorMode or App updates
+// Impact: Prevents expensive re-renders and virtual DOM diffing for the game UI
+export default React.memo(BlackjackGame);
