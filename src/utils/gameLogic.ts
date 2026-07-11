@@ -41,3 +41,13 @@ export const ROULETTE_NUMBER_COLORS: { [key: number]: 'red' | 'black' | 'green' 
   28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red',
   35: 'black', 36: 'red'
 };
+
+/*
+ * ⚡ Bolt Optimization:
+ * What: Hoisted static arrays (ROULETTE_NUMBERS, ROULETTE_BET_TYPES, ROULETTE_CHIPS) outside of the component.
+ * Why: Avoids re-creating these arrays on every render cycle of RouletteGame (anti-pattern: inline array instantiation).
+ * Impact: Reduces garbage collection overhead and memory allocations during rapid state updates.
+ */
+export const ROULETTE_NUMBERS = Array.from({ length: 37 }, (_, i) => i);
+export const ROULETTE_BET_TYPES = ['red', 'black', 'even', 'odd', '1-18', '19-36'];
+export const ROULETTE_CHIPS = [5, 10, 25, 50, 100];
