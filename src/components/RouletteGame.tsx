@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { VitoMessage } from '../types';
-import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
+import { ROULETTE_NUMBER_COLORS, checkOutsideBetWin } from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
 // Roulette Game Component
@@ -40,19 +40,12 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
     const numColor = ROULETTE_NUMBER_COLORS[finalNumber];
 
     for (const [betType, betAmount] of Object.entries(currentBets)) {
-      if (!isNaN(parseInt(betType)) && parseInt(betType) === finalNumber) {
+      if (!isNaN(parseInt(betType, 10)) && parseInt(betType, 10) === finalNumber) {
         // Straight up bet (35:1) + original bet = 36x
         totalWinnings += betAmount * 36;
       } else if (finalNumber !== 0) {
         // Outside bets
-        if (
-          (betType === 'red' && numColor === 'red') ||
-          (betType === 'black' && numColor === 'black') ||
-          (betType === 'even' && finalNumber % 2 === 0) ||
-          (betType === 'odd' && finalNumber % 2 !== 0) ||
-          (betType === '1-18' && finalNumber >= 1 && finalNumber <= 18) ||
-          (betType === '19-36' && finalNumber >= 19 && finalNumber <= 36)
-        ) {
+        if (checkOutsideBetWin(betType, finalNumber)) {
           // 1:1 payout + original bet = 2x
           totalWinnings += betAmount * 2;
         }
