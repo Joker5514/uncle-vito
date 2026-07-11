@@ -41,3 +41,14 @@ export const ROULETTE_NUMBER_COLORS: { [key: number]: 'red' | 'black' | 'green' 
   28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red',
   35: 'black', 36: 'red'
 };
+
+export const ROULETTE_NUMBERS = Array.from({ length: 37 }, (_, i) => i);
+export const ROULETTE_BET_TYPES = ['red', 'black', 'even', 'odd', '1-18', '19-36'];
+export const ROULETTE_CHIPS = [5, 10, 25, 50, 100];
+export const ROULETTE_CHIP_COLOR_CLASSES: { [key: number]: string } = {
+  5: 'bg-blue-600',
+  10: 'bg-green-600',
+  25: 'bg-slate-700',
+  50: 'bg-orange-900',
+  100: 'bg-indigo-600'
+};
