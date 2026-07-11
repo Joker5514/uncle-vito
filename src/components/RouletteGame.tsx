@@ -1,6 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { VitoMessage } from '../types';
-import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
+import {
+  ROULETTE_NUMBER_COLORS,
+  ROULETTE_NUMBERS,
+  ROULETTE_BET_TYPES,
+  ROULETTE_CHIPS,
+  ROULETTE_CHIP_COLOR_CLASSES
+} from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
 // Roulette Game Component
@@ -117,7 +123,8 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="bg-green-900/80 rounded-lg p-4 border-2 border-amber-500/50 mb-4">
         <div className="grid grid-cols-6 gap-1 mb-2">
-          {Array.from({ length: 37 }, (_, i) => i).map(num => (
+          {/* ⚡ Bolt Optimization: Using hoisted static array ROULETTE_NUMBERS instead of Array.from to prevent recreation */}
+          {ROULETTE_NUMBERS.map(num => (
             <button
               key={num}
               onClick={() => placeBet(num.toString())}
@@ -130,7 +137,8 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
         </div>
 
         <div className="grid grid-cols-6 gap-1 mt-2">
-          {['red', 'black', 'even', 'odd', '1-18', '19-36'].map(bet => (
+          {/* ⚡ Bolt Optimization: Using hoisted static array ROULETTE_BET_TYPES instead of inline array to prevent recreation */}
+          {ROULETTE_BET_TYPES.map(bet => (
             <button
               key={bet}
               onClick={() => placeBet(bet)}
@@ -145,12 +153,13 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="flex gap-2 justify-center items-center">
         <div className="flex gap-2">
-          {[5, 10, 25, 50, 100].map(chip => (
+          {/* ⚡ Bolt Optimization: Using hoisted static array and object to prevent recreation */}
+          {ROULETTE_CHIPS.map(chip => (
             <button
               key={chip}
               onClick={() => setSelectedChip(chip)}
               className={`w-12 h-12 rounded-full font-bold transition-all ${selectedChip === chip ? 'scale-110 ring-2 ring-yellow-300' : ''}`}
-              style={{backgroundColor: chip === 5 ? '#2563eb' : chip === 10 ? '#16a34a' : chip === 25 ? '#334155' : chip === 50 ? '#7c2d12' : '#4f46e5'}}
+              style={{backgroundColor: ROULETTE_CHIP_COLOR_CLASSES[chip]}}
             >
               {chip}
             </button>
@@ -175,4 +184,5 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
   );
 };
 
-export default RouletteGame;
+// ⚡ Bolt Optimization: Wrapping in memo to prevent unnecessary re-renders when parent state changes but props don't.
+export default memo(RouletteGame);
