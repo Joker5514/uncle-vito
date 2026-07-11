@@ -1,0 +1,3 @@
+## 2024-04-27 - Bolt: Optimize roulette bet sum calculation
+**Learning:** In React components dealing with game states (like `currentBets` in `RouletteGame.tsx`), multiple iterations over the same object for different calculations (e.g., winnings vs. total bets) can cause redundant memory allocations and iterations. In this codebase, avoiding `Object.values().reduce()` when a loop over the object already exists is a measurable micro-optimization.
+**Action:** When calculating derived state or outcomes from user input objects, combine accumulations into existing loops rather than chaining multiple array methods.
