@@ -41,3 +41,18 @@ export const ROULETTE_NUMBER_COLORS: { [key: number]: 'red' | 'black' | 'green' 
   28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red',
   35: 'black', 36: 'red'
 };
+
+// ⚡ Bolt Optimization:
+// What: Extract inline static arrays into exported constants.
+// Why: Moving static configurations out of the component body prevents redundant memory allocation and garbage collection overhead on every render cycle.
+// Impact: Reduced memory pressure and improved render performance.
+export const ROULETTE_NUMBERS = Array.from({ length: 37 }, (_, i) => i);
+export const ROULETTE_BET_TYPES = ['red', 'black', 'even', 'odd', '1-18', '19-36'];
+export const ROULETTE_CHIPS = [5, 10, 25, 50, 100];
+export const ROULETTE_CHIP_COLOR_CLASSES: Record<number, string> = {
+  5: '#2563eb',
+  10: '#16a34a',
+  25: '#334155',
+  50: '#7c2d12',
+  100: '#4f46e5'
+};
