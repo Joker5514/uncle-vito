@@ -37,9 +37,22 @@ describe('BlackjackGame', () => {
     // Wait for initial deal
     await waitFor(() => screen.getAllByText(/[♠♥♦♣]/));
 
+    // Prevent false-negative test failures by ensuring the Hit button is not disabled
+    // (e.g. if the initial hand is a Blackjack).
+    let hitButton = screen.getByText('Hit') as HTMLButtonElement;
+    while (hitButton.disabled) {
+        fireEvent.click(screen.getByText('New Hand'));
+        await waitFor(() => {
+            hitButton = screen.getByText('Hit') as HTMLButtonElement;
+            if (!hitButton.disabled) {
+               expect(hitButton.disabled).toBe(false);
+            }
+        });
+    }
+
     const initialCards = screen.getAllByText(/[♠♥♦♣]/).length;
 
-    fireEvent.click(screen.getByText('Hit'));
+    fireEvent.click(hitButton);
 
     await waitFor(() => {
         const newCards = screen.getAllByText(/[♠♥♦♣]/).length;
