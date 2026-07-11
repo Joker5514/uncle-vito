@@ -1,0 +1,3 @@
+## 2024-11-20 - Derived State Optimization
+**Learning:** Found a specific instance where derived state (Blackjack scores) was being synchronized via `useEffect`, causing redundant render cycles. While calculating scores directly during render is generally known, observing the specific bottleneck it caused in the game loop's responsiveness highlights the importance of avoiding `useEffect` for derived data even for seemingly simple calculations.
+**Action:** When working with game states or highly reactive UIs, always look for state variables that can be mathematically derived from other state variables directly during the render phase to prevent cascading re-renders.
