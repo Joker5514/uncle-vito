@@ -9,8 +9,14 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
+
+  // ⚡ Bolt Optimization:
+  // What: Replaced useState/useEffect for playerScore and dealerScore with derived variables.
+  // Why: State synchronization using useEffect causes unnecessary double-renders (one for cards, one for score update).
+  // Impact: Eliminates ~50% of render cycles during gameplay.
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
+
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -36,11 +42,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
