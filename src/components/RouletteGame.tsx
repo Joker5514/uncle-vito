@@ -3,6 +3,14 @@ import { VitoMessage } from '../types';
 import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
+// ⚡ Bolt Optimization:
+// What: Hoist static configuration arrays outside the component
+// Why: Prevents redundant memory allocation for static data on every single render cycle
+// Impact: Improves memory efficiency and Garbage Collection overhead
+const ROULETTE_NUMBERS = Array.from({ length: 37 }, (_, i) => i);
+const ROULETTE_BETS = ['red', 'black', 'even', 'odd', '1-18', '19-36'];
+const ROULETTE_CHIPS = [5, 10, 25, 50, 100];
+
 // Roulette Game Component
 const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = ({ setVitoMessage }) => {
   const [balance, setBalance] = useState(1000);
@@ -117,7 +125,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="bg-green-900/80 rounded-lg p-4 border-2 border-amber-500/50 mb-4">
         <div className="grid grid-cols-6 gap-1 mb-2">
-          {Array.from({ length: 37 }, (_, i) => i).map(num => (
+          {ROULETTE_NUMBERS.map(num => (
             <button
               key={num}
               onClick={() => placeBet(num.toString())}
@@ -130,7 +138,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
         </div>
 
         <div className="grid grid-cols-6 gap-1 mt-2">
-          {['red', 'black', 'even', 'odd', '1-18', '19-36'].map(bet => (
+          {ROULETTE_BETS.map(bet => (
             <button
               key={bet}
               onClick={() => placeBet(bet)}
@@ -145,7 +153,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="flex gap-2 justify-center items-center">
         <div className="flex gap-2">
-          {[5, 10, 25, 50, 100].map(chip => (
+          {ROULETTE_CHIPS.map(chip => (
             <button
               key={chip}
               onClick={() => setSelectedChip(chip)}
@@ -175,4 +183,8 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
   );
 };
 
-export default RouletteGame;
+// ⚡ Bolt Optimization:
+// What: Wrap the entire game component in React.memo
+// Why: Prevents the heavy game component from re-rendering unless its props actually change
+// Impact: Significantly reduces wasted render cycles when unrelated state in the parent updates
+export default React.memo(RouletteGame);
