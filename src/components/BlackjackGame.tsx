@@ -142,4 +142,5 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   );
 };
 
-export default BlackjackGame;
+// ⚡ Bolt Optimization: Wrap component in React.memo to prevent unnecessary re-renders
+export default React.memo(BlackjackGame);
