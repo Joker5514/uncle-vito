@@ -3,6 +3,11 @@ import { VitoMessage } from '../types';
 import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
+// Static arrays hoisted to prevent redundant allocations on every render
+const ROULETTE_NUMBERS = Array.from({ length: 37 }, (_, i) => i);
+const OUTSIDE_BETS = ['red', 'black', 'even', 'odd', '1-18', '19-36'];
+const CHIP_VALUES = [5, 10, 25, 50, 100];
+
 // Roulette Game Component
 const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = ({ setVitoMessage }) => {
   const [balance, setBalance] = useState(1000);
@@ -117,7 +122,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="bg-green-900/80 rounded-lg p-4 border-2 border-amber-500/50 mb-4">
         <div className="grid grid-cols-6 gap-1 mb-2">
-          {Array.from({ length: 37 }, (_, i) => i).map(num => (
+          {ROULETTE_NUMBERS.map(num => (
             <button
               key={num}
               onClick={() => placeBet(num.toString())}
@@ -130,7 +135,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
         </div>
 
         <div className="grid grid-cols-6 gap-1 mt-2">
-          {['red', 'black', 'even', 'odd', '1-18', '19-36'].map(bet => (
+          {OUTSIDE_BETS.map(bet => (
             <button
               key={bet}
               onClick={() => placeBet(bet)}
@@ -145,7 +150,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="flex gap-2 justify-center items-center">
         <div className="flex gap-2">
-          {[5, 10, 25, 50, 100].map(chip => (
+          {CHIP_VALUES.map(chip => (
             <button
               key={chip}
               onClick={() => setSelectedChip(chip)}
