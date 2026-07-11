@@ -9,10 +9,15 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
+
+  // ⚡ Bolt Optimization: Calculate derived state during render
+  // What: Removed useState and useEffect for playerScore and dealerScore
+  // Why: Storing derived values in state using useEffect causes an extra, unnecessary re-render cycle after the hand state updates
+  // Impact: Reduces re-renders by ~50% per card drawn/dealt and improves visual responsiveness
+  const playerScore = calculateScore(playerHand);
+  const dealerScore = calculateScore(dealerHand);
 
   const updateVitoMessage = useCallback(async (context: string, outcome: 'win' | 'loss' | 'neutral') => {
     const text = await getVitoMessage(context, outcome);
@@ -36,11 +41,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;
