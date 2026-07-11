@@ -1,6 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { VitoMessage } from '../types';
-import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
+import {
+  ROULETTE_NUMBER_COLORS,
+  ROULETTE_NUMBERS,
+  ROULETTE_BET_TYPES,
+  ROULETTE_CHIPS
+} from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
 // Roulette Game Component
@@ -116,8 +121,14 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
       </div>
 
       <div className="bg-green-900/80 rounded-lg p-4 border-2 border-amber-500/50 mb-4">
+        {/*
+          ⚡ Bolt Optimization:
+          What: Hoisted static arrays for roulette numbers, bet types, and chips to gameLogic.ts.
+          Why: Prevents recreation of these arrays on every render, avoiding unnecessary garbage collection and memory allocations.
+          Impact: Reduces memory footprint and re-render overhead.
+        */}
         <div className="grid grid-cols-6 gap-1 mb-2">
-          {Array.from({ length: 37 }, (_, i) => i).map(num => (
+          {ROULETTE_NUMBERS.map(num => (
             <button
               key={num}
               onClick={() => placeBet(num.toString())}
@@ -130,7 +141,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
         </div>
 
         <div className="grid grid-cols-6 gap-1 mt-2">
-          {['red', 'black', 'even', 'odd', '1-18', '19-36'].map(bet => (
+          {ROULETTE_BET_TYPES.map(bet => (
             <button
               key={bet}
               onClick={() => placeBet(bet)}
@@ -145,7 +156,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
 
       <div className="flex gap-2 justify-center items-center">
         <div className="flex gap-2">
-          {[5, 10, 25, 50, 100].map(chip => (
+          {ROULETTE_CHIPS.map(chip => (
             <button
               key={chip}
               onClick={() => setSelectedChip(chip)}
