@@ -4,11 +4,15 @@ import BlackjackGame from './BlackjackGame';
 import RouletteGame from './RouletteGame';
 
 // Tutor Mode Component
+// ⚡ Bolt Optimization:
+// What: Wrapping TutorMode in React.memo.
+// Why: Prevents unnecessary re-renders of the entire tutor interface when the App state updates unrelated fields.
+// Impact: Reduces rendering work for the game containers.
 const TutorMode: React.FC<{
   gameType: GameType;
   onClose: () => void;
   setVitoMessage: (msg: VitoMessage) => void;
-}> = ({ gameType, onClose, setVitoMessage }) => {
+}> = React.memo(({ gameType, onClose, setVitoMessage }) => {
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
       <div className="bg-[#1a1a1a] rounded-2xl shadow-2xl border-2 border-amber-400/50 w-full max-w-5xl text-white relative max-h-[90vh] overflow-y-auto">
@@ -31,6 +35,6 @@ const TutorMode: React.FC<{
       </div>
     </div>
   );
-};
+});
 
 export default TutorMode;
