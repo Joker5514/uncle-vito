@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card as CardType, VitoMessage } from '../types';
 import { createDeck, shuffleDeck, calculateScore } from '../utils/gameLogic';
 import Card from './Card';
 import { getVitoMessage } from '../services/ai';
 
 // Blackjack Game Component
-const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = ({ setVitoMessage }) => {
+const BlackjackGame = ({ setVitoMessage }: { setVitoMessage: (msg: VitoMessage) => void }) => {
   const [deck, setDeck] = useState<CardType[]>([]);
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [dealerScore, setDealerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [message, setMessage] = useState('');
+
+  // ⚡ Bolt Optimization: Derive scores during render instead of in useEffect
+  // This prevents an unnecessary double-render cycle when cards are dealt or hit
+  const playerScore = useMemo(() => calculateScore(playerHand), [playerHand]);
+  const dealerScore = useMemo(() => calculateScore(dealerHand), [dealerHand]);
 
   const updateVitoMessage = useCallback(async (context: string, outcome: 'win' | 'loss' | 'neutral') => {
     const text = await getVitoMessage(context, outcome);
@@ -36,11 +39,6 @@ const BlackjackGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = 
   useEffect(() => {
     deal();
   }, [deal]);
-
-  useEffect(() => {
-    setPlayerScore(calculateScore(playerHand));
-    setDealerScore(calculateScore(dealerHand));
-  }, [playerHand, dealerHand]);
 
   const handleHit = async () => {
     if (gameOver || deck.length === 0) return;

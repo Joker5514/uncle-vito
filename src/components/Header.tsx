@@ -1,7 +1,7 @@
-import React from 'react';
+import { memo } from 'react';
 
 // Header Component
-const Header: React.FC<{ affiliateLink: string }> = ({ affiliateLink }) => {
+const Header = memo(({ affiliateLink }: { affiliateLink: string }) => {
   return (
     <header className="border-b border-white/10 bg-black/40 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -18,6 +18,6 @@ const Header: React.FC<{ affiliateLink: string }> = ({ affiliateLink }) => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;

@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { VitoMessage } from '../types';
 import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
 // Roulette Game Component
-const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = ({ setVitoMessage }) => {
+const RouletteGame = ({ setVitoMessage }: { setVitoMessage: (msg: VitoMessage) => void }) => {
   const [balance, setBalance] = useState(1000);
   const [bets, setBets] = useState<{ [key: string]: number }>({});
   const [selectedChip, setSelectedChip] = useState(10);
@@ -12,7 +12,8 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
   const [winningNumber, setWinningNumber] = useState<number | null>(null);
   const [message, setMessage] = useState("Place your bets!");
 
-  const totalBet = Object.values(bets).reduce((a, b) => a + b, 0);
+  // ⚡ Bolt Optimization: Memoize total bet calculation
+  const totalBet = useMemo(() => Object.values(bets).reduce((a, b) => a + b, 0), [bets]);
 
   const updateVitoMessage = useCallback(async (context: string, outcome: 'win' | 'loss' | 'neutral') => {
     const text = await getVitoMessage(context, outcome);
