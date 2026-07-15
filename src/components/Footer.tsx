@@ -12,4 +12,5 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer;
+// Memoize to prevent unnecessary re-renders when parent App state changes
+export default React.memo(Footer);

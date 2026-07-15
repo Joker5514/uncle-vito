@@ -28,4 +28,5 @@ const ValuePropositions: React.FC = () => {
   );
 };
 
-export default ValuePropositions;
+// Memoize to prevent unnecessary re-renders when parent App state changes
+export default React.memo(ValuePropositions);
