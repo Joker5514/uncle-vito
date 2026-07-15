@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { VitoMessage } from '../types';
-import { ROULETTE_NUMBER_COLORS } from '../utils/gameLogic';
+import { ROULETTE_NUMBER_COLORS, getRandomInt } from '../utils/gameLogic';
 import { getVitoMessage } from '../services/ai';
 
 // Roulette Game Component
@@ -83,7 +83,7 @@ const RouletteGame: React.FC<{ setVitoMessage: (msg: VitoMessage) => void }> = (
     const currentBets = { ...bets };
 
     setTimeout(() => {
-      const finalNumber = Math.floor(Math.random() * 37);
+      const finalNumber = getRandomInt(0, 37);
       calculateWinnings(finalNumber, currentBets);
     }, 2000);
   };
